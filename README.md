@@ -12,7 +12,7 @@ You can also find simple analytics like incoming data volume and visit counter o
 
 1. Setup Python3, pip 
 2. Create and activate virtual environment
-3. Install from GitHub: (venv)mydir> pip install git+
+3. Install from GitHub: (venv)mydir> pip install git+https://github.com/SviatoslavIliash/Simple-proxy
 4. To make migrations in db, run: `python manage.py makemigrations`, `python manage.py migrate`
 5. Run using Docker: Install Doker(https://docs.docker.com/get-docker/), clone git repository
 6. To build image, run: `docker build . -t myapp`
