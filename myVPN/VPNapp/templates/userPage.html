@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}User page{% endblock %}
+
+{% block header %}
+  <a href="{% url 'logout' %}" ><button type="submit" class="btn btn-info">Log out</button></a>
+{% endblock %}
+
+{% block body %}
+
+<h1>Welcome, {{user.username}}</h1>
+<div class="row g-0 mx-0">
+  <div class="col-6">
+    <div class="card mb-3" >
+      <div class="card-body">
+        <img src="{{user.get_image}}" class="card-img-top" style="height: 100px; object-fit: contain;" alt="Profile image">
+        <div class="card-body">
+          <h5 class="card-title">{{user.username}}</h5>
+          <p class="card-text">First name: {{user.first_name}}</p>
+          <p class="card-text">Last name: {{user.last_name}}</p>
+          <p class="card-text">About me: {{user.info}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-6">
+    <div class="card mb-3">
+      <div class="card-body">
+        <form action="{% url 'user_page' %}" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          {{ user_form }}
+          <input type="submit" class="btn btn-success mt-3" value="Submit" name="user_submit">
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card mb-3">
+  <div class="card-body">
+    <h3>Your sites:</h3>
+    <table class="table table-success table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Alias</th>
+          <th scope="col">Site URL</th>
+          <th scope="col">Visit counter</th>
+          <th scope="col">Data in/KiB</th>
+          <th scope="col">Data out/B</th>
+          <th scope="col">Get my site</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for site in my_sites %}
+          <tr>
+            <td><a href="{{ site.alias_url}}" target="_blank" name="in_alias">{{ site.alias }}</a></td>
+            <td>{{ site.alias_url}}</td>
+            <td>{{ site.visit_counter }}</td>
+            <td>{{ site.data_in }}</td>
+            <td>{{ site.data_out }}</td>
+            <td>
+              <a class="btn btn-success mt-3" name="get_my_site"
+                 href="{% url 'my_alias_view' site.alias %}" target="_blank">Get</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <form action="{% url 'user_page' %}" method="post">
+          {% csrf_token %}
+      <h3>Add new sites:</h3>
+      <div class="row">
+        <div class="col-6">
+          {{ site_form.alias.label_tag }}
+          {{ site_form.alias }}
+        </div>
+        <div class="col-6">
+          {{ site_form.alias_url.label_tag }}
+          {{ site_form.alias_url }}
+        </div>
+      </div>
+      <input type="submit" class="btn btn-success mt-3" value="Create" name="new_site_submit">
+    </form>
+  </div>
+</div>
+
+{% endblock %}
